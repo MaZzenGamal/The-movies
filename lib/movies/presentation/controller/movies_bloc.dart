@@ -20,20 +20,20 @@ class MoviesBloc extends Bloc<MoviesEvent, MoviesState> {
     on<GetNowPlayingEvent>((event, emit) async {
       final result = await getNowPlayingMoviesUseCase.execute();
       result.fold(
-          (l) => emit(MoviesState(
+          (l) => emit(state.copyWith(
               nowPlayingState: RequestState.error,
               nowPlayingMessage: l.message)),
-          (r) => emit(MoviesState(
+          (r) => emit(state.copyWith(
               nowPlayingMovies: r, nowPlayingState: RequestState.success)));
     });
 
     on<GetPopularEvent>((event,emit)async{
       final result = await getPopularMoviesUseCase.execute();
       result.fold(
-              (l) => emit(MoviesState(
+              (l) => emit(state.copyWith(
               popularState: RequestState.error,
               popularMessage: l.message)),
-              (r) => emit(MoviesState(
+              (r) => emit(state.copyWith(
               popularMovies: r, popularState: RequestState.success)));
 
 
