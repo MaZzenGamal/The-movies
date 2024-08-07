@@ -11,16 +11,18 @@ import '../../../core/utiles/app_constants.dart';
 
 class NowPlayingWidget extends StatelessWidget {
   const NowPlayingWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<MoviesBloc, MoviesState>(
+      buildWhen: (previous, current) =>
+          previous.nowPlayingState != current.nowPlayingState,
       builder: (context, state) {
-        print('NNNNNNNNNNNNNNNNNNNNN');
-        switch(state.nowPlayingState){
+        print('BlocBuilder : NowPlayingWidget ');
+        switch (state.nowPlayingState) {
           case RequestState.loading:
             return const SizedBox(
-                height: 400,
-                child: Center(child: CircularProgressIndicator()));
+                height: 400, child: Center(child: CircularProgressIndicator()));
           case RequestState.success:
             return FadeIn(
               duration: const Duration(milliseconds: 500),
@@ -31,7 +33,7 @@ class NowPlayingWidget extends StatelessWidget {
                   onPageChanged: (index, reason) {},
                 ),
                 items: state.nowPlayingMovies.map(
-                      (item) {
+                  (item) {
                     return GestureDetector(
                       key: const Key('openMovieMinimalDetail'),
                       onTap: () {
@@ -59,7 +61,8 @@ class NowPlayingWidget extends StatelessWidget {
                             blendMode: BlendMode.dstIn,
                             child: CachedNetworkImage(
                               height: 560.0,
-                              imageUrl: ApiConstants.imageUrl(item.backdropPath),
+                              imageUrl:
+                                  ApiConstants.imageUrl(item.backdropPath),
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -82,7 +85,8 @@ class NowPlayingWidget extends StatelessWidget {
                                       Text(
                                         'Now Playing'.toUpperCase(),
                                         style: const TextStyle(
-                                            fontSize: 16.0, color: Colors.white),
+                                            fontSize: 16.0,
+                                            color: Colors.white),
                                       ),
                                     ],
                                   ),
@@ -109,7 +113,9 @@ class NowPlayingWidget extends StatelessWidget {
           case RequestState.error:
             return SizedBox(
               height: 400,
-              child: Center(child: Text(state.nowPlayingMessage),),
+              child: Center(
+                child: Text(state.nowPlayingMessage),
+              ),
             );
         }
       },

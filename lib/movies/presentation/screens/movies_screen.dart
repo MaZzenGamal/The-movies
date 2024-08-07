@@ -14,11 +14,11 @@ class MoviesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('object');
     return BlocProvider(
       create: (context) => sl<MoviesBloc>()
         ..add(GetNowPlayingEvent())
-        ..add(GetPopularEvent()),
+        ..add(GetPopularEvent())
+        ..add(GetTopRatedEvent()),
       child: Scaffold(
         backgroundColor: Colors.grey[900],
         body: SingleChildScrollView(
