@@ -19,8 +19,13 @@ class RemoteDataSource extends BaseRemoteDataSource {
   Future<List<MovieModel>> getNowPlayingMovies() async {
     final response = await dio.get(ApiConstants.nowPlayingMoviesPath);
     if (response.statusCode == 200) {
-      return List<MovieModel>.from((response.data['results'] as List)
-          .map((e) => MovieModel.fromJson(e)));
+      List<MovieModel> movies = [];
+      for (var item in response.data['results']) {
+        movies.add(MovieModel.fromJson(item));
+      }
+      return movies;
+      // return List<MovieModel>.from((response.data['results'] as List)
+      //     .map((e) => MovieModel.fromJson(e)));
     } else {
       throw ServerExceptions(
           errorMessageModel: ErrorMessageModel.fromJson(response.data));
@@ -32,8 +37,13 @@ class RemoteDataSource extends BaseRemoteDataSource {
     final response = await dio.get(ApiConstants.nowPopularMoviesPath);
 
     if (response.statusCode == 200) {
-      return List<MovieModel>.from((response.data['results'] as List)
-          .map((e) => MovieModel.fromJson(e)));
+      List<MovieModel> movies =[];
+      for(var item in response.data['results']){
+        movies.add(MovieModel.fromJson(item));
+      }
+      return movies;
+      // return List<MovieModel>.from((response.data['results'] as List)
+      //     .map((e) => MovieModel.fromJson(e)));
     } else {
       throw ServerExceptions(
           errorMessageModel: ErrorMessageModel.fromJson(response.data));
@@ -45,6 +55,7 @@ class RemoteDataSource extends BaseRemoteDataSource {
     final response = await dio.get(ApiConstants.nowTopRatedMoviesPath);
 
     if (response.statusCode == 200) {
+
       return List<MovieModel>.from((response.data['results'] as List)
           .map((e) => MovieModel.fromJson(e)));
     } else {
